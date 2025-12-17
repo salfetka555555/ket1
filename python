@@ -1,0 +1,47 @@
+
+Копировать
+A зависит от B, C
+B зависит от D
+C зависит от D, E
+E зависит от B
+Выполняются следующие шаги:
+
+Создаем граф зависимостей:
+Копировать
+G = DependencyGraph()
+G.add_component("A")
+G.add_component("B")
+G.add_component("C")
+G.add_component("D")
+G.add_component("E")
+G.add_dependency("A", "B")
+G.add_dependency("A", "C")
+G.add_dependency("B", "D")
+G.add_dependency("C", "D")
+G.add_dependency("C", "E")
+G.add_dependency("E", "B") # Это создаст цикл!
+Выполняем проверку на циклы:
+python
+Копировать
+if not G.is_acyclic():
+    print("Ошибка: обнаружены циклы.")
+else:
+    order = G.get_topological_order()
+    print(f"Топологическая сортировка: {order}")
+Поскольку в нашем примере имеется цикл (
+E
+E 
+→
+→ 
+B
+B), система выдаст сообщение об ошибке.
+Поиск зависимостей:
+python
+Копировать
+analyzer = DependencyAnalyzer(G)
+bfs_result = analyzer.find_dependencies_bfs("A")
+dfs_result = analyzer.find_dependencies_dfs("A")
+Дополнительные задания
+Визуализация графа: Можно воспользоваться библиотеками типа GraphViz или NetworkX для визуализации графа зависимостей.
+Оптимизация: Кэширование результатов поиска DFS для повторного использования при последующих запросах.
+Расширение функционала: Расчёт весов рёбер (например, длительность компиляции каждой зависимости) и определение критического пути сборки.
